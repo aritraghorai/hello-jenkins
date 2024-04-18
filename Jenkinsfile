@@ -5,6 +5,7 @@ pipeline {
         imageName= "aritraghorai/react-app"
         registryCredential= "aritraghorai"
         dockerImage=''
+        DOCKER_CRED=credentials('docker-hub-cred')
     }
     stages {
         stage("Build Image") {
@@ -14,14 +15,22 @@ pipeline {
                 }
              }
         }
-        stage("deploy image") {
+        stage("docker login") {
+             steps {
+                sh 'echo $DOCKER_CRED_PSW | docker login -u $DOCKER_CRED_USR --password-stdin '
+             }
+        }
+        stage("docker login") {
              steps {
                 script {
-                    docker.withRegistry("https://hub.docker.com","docker-hub-cred"){
                      dockerImage.push("${env.BUILD_NUMBER}")
                     }
                 }
              }
         }
-    }
+        post{
+            always{
+                sh 'docker logout'
+            }
+        }
 }
