@@ -7,12 +7,6 @@ pipeline {
         dockerImage=''
     }
     stages {
-
-        stage("install dependencies"){
-            steps{
-                 sh 'npm install'
-            }
-        }
         stage("Build Image") {
              steps{
                 script {
