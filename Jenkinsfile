@@ -20,7 +20,7 @@ pipeline {
                 sh 'echo $DOCKER_CRED_PSW | docker login -u $DOCKER_CRED_USR --password-stdin '
              }
         }
-        stage("docker login") {
+        stage("docker push") {
              steps {
                 script {
                      dockerImage.push("${env.BUILD_NUMBER}")
